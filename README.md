@@ -3,6 +3,7 @@ python based ping software using telnet to bypass ICMP restrictions
 
 ## Prerequisites
 This script requires the `telnetlib` and `colorama` Python libraries to be installed.
+
 Ensure that you have `Python 3.x` installed on your system.
 
 ## Installation
