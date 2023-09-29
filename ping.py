@@ -1,4 +1,3 @@
-#!/bin/bash
 
 import telnetlib, colorama, time, os
 from colorama import Fore, Style

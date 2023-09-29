@@ -10,7 +10,7 @@ python based ping software using telnet to bypass ICMP restrictions
 ```
 git clone https://github.com/p-i-c-o/pinger
 cd pinger
-chmod +x ./ping
+chmod +x ./run
 nano hosts
 ```
 Then simply add your hosts in this format: `ipaddress:port`
@@ -19,4 +19,6 @@ Example: `www.google.com:80`
 
 ## Usage
 Simply run:
-`./ping`
+`./run`
+or
+`python3 ping.py`
