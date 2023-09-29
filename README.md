@@ -5,6 +5,7 @@ python based ping software using telnet to bypass ICMP restrictions
 - Python 3.x
 - `telnetlib`
 - `colorama`
+- `cursor`
 
 ## Installation
 ```
