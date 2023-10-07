@@ -2,8 +2,6 @@
 import telnetlib, colorama, time, os
 from colorama import Fore, Style
 from datetime import datetime
-import cursor
-cursor.hide()
 
 import ports
 from ports import portlist
@@ -64,4 +62,3 @@ try:
       time.sleep(1)
 except KeyboardInterrupt:
   print('\nQuitting...')
-  cursor.show()
