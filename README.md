@@ -12,6 +12,8 @@ git clone https://github.com/p-i-c-o/pinger
 cd pinger
 nano hosts
 ```
+or (using the install script)
+``
 Then simply add your hosts in this format: `ipaddress:port:neatname`
 - **IPADDRESS**: This can be anything ranging from `192.168.0.1` to `www.google.com`
 - **PORT**: This can be any port you want TELNET to scan
