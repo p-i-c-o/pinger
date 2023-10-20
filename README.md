@@ -3,7 +3,7 @@ python based ping software using telnet to bypass ICMP restrictions
 
 ## Prerequisites
 - Python 3.x
-- `telnetlib` _May be deprecated on new python versions_
+- `telnetlib` _May be deprecated on newer python versions_
 - `colorama`
 
 ## Installation
@@ -13,9 +13,9 @@ cd pinger
 nano hosts
 ```
 Then simply add your hosts in this format: `ipaddress:port:neatname`
-- ***IPADDRESS***: This can be anything ranging from `192.168.0.1` to `www.google.com`
-- ***PORT***: This can be any port you want TELNET to scan
-- ***NEATNAME***: This can be anything, it will be shown at the front so the user can quickly identify the host
+- **IPADDRESS**: This can be anything ranging from `192.168.0.1` to `www.google.com`
+- **PORT**: This can be any port you want TELNET to scan
+- **NEATNAME**: This can be anything, it will be shown at the front so the user can quickly identify the host
 
 Example: `www.google.com:80:Google`
 
