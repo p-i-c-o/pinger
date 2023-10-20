@@ -50,6 +50,15 @@ def check_online(hostname, port, name):
         stat = Fore.RED + "[×]" + Style.RESET_ALL
         return f"{stat} {name:<20}{hostname:<30} {port}: {getport(port)}"
 
+
+def stat(hostname, port):
+    try:
+        tn = telnetlib.Telnet(hostname, port, timeout=1)
+        tn.close()
+        return "Online"
+    except (ConnectionRefusedError, OSError) as e:
+        return "Offline"
+
 # Returns date and time in the "DD/MM/YYYY | HH:MM:SS"
 def gettime():
     now = datetime.now()
@@ -57,11 +66,14 @@ def gettime():
     formatted_time = now.strftime("%H:%M:%S")
     return f"{formatted_date} | {formatted_time}"
 
+
 # This reads the hosts file and removes any empty lines in order to prevent trying to ping ""
 with open('hosts', 'r+') as f:
     temp = f.readlines()
 for i in temp:
     hosts.append(i.replace('\n', ''))
+
+
 
 # Start of loop
 try:
@@ -84,4 +96,5 @@ try:
       output = ""
       time.sleep(1)
 except KeyboardInterrupt: # Catches the keyboard interrupt and neatly exits
+  os.system('rm -r __pycache__')
   print('\nQuitting...')
