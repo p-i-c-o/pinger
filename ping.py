@@ -67,15 +67,6 @@ def gettime():
 if not os.path.exists("log"):
     os.makedirs("log")
 
-def log(status, host):
-  with open(f'log/{host}.log', 'r+') as log:
-    content = log.read()
-    log.close()
-  with open(f'log/{host}.log', 'w+') as log:
-    now = datetime.now()
-    log.write(content + "\n" + f'{now.strftime("%d/%m/%Y")} @ {now.strftime("%H:%M:%S")} | {host} is {status}')
-    content = ""
-
 
 # This reads the hosts file and removes any empty lines in order to prevent trying to ping ""
 with open('hosts', 'r+') as f:
@@ -100,7 +91,6 @@ try:
           port = host[1]
           name = host[2]
           output = output + check_online(ip, port, name) + "\n" # Appends the result of "check_online" to the output var
-          log(stat(ip, port), name)
       os.system('clear')
       print(output) # Print the header and the scanned hosts
       output = ""
