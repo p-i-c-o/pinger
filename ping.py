@@ -11,7 +11,6 @@
 # pinger is an uptime tracker for the CLI that bypasses ICMP restrictions by using telnet
 
 # PLANS:
-# Neat names for hosts
 # Logging
 # GUI with PySimpleGUI
 
@@ -41,15 +40,15 @@ def getport(port_num):
 
 
 # Uses telnetlib to check if a host is online an returns a concatenated message with colors
-def check_online(hostname, port):
+def check_online(hostname, port, name):
     try:
         tn = telnetlib.Telnet(hostname, port, timeout=1)
         tn.close()
         stat = Fore.GREEN + "[✓]" + Style.RESET_ALL
-        return f"{stat} {hostname:<40} {port}: {getport(port)}"
+        return f"{stat} {name:<20}{hostname:<30} {port}: {getport(port)}"
     except (ConnectionRefusedError, OSError) as e:
         stat = Fore.RED + "[×]" + Style.RESET_ALL
-        return f"{stat} {hostname:<40} {port}: {getport(port)}"
+        return f"{stat} {name:<20}{hostname:<30} {port}: {getport(port)}"
 
 # Returns date and time in the "DD/MM/YYYY | HH:MM:SS"
 def gettime():
@@ -71,14 +70,15 @@ try:
       header = f"""Pinger
 {gettime()}
 
-    {Style.BRIGHT}[HOSTNAME/URL]{" "*27}[PORT]{Style.RESET_ALL}
+    {Style.BRIGHT}[HOST]{" "*14}[PORT]{" "*25}[HOSTNAME/IP]{Style.RESET_ALL}
 """
       output += header # Adding "header" to output first to put it at the top
       for i in hosts: # Iteratiing through the hosts to convert the raw text from the file into the "ip" and "port" vars
           host = i.split(':')
           ip = host[0]
           port = host[1]
-          output = output + check_online(ip, port) + "\n" # Appends the result of "check_online" to the output var
+          name = host[2]
+          output = output + check_online(ip, port, name) + "\n" # Appends the result of "check_online" to the output var
       os.system('clear')
       print(output) # Print the header and the scanned hosts
       output = ""
