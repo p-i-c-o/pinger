@@ -19,8 +19,9 @@ Then simply add your hosts in this format: `ipaddress:port:neatname`
 - **NEATNAME**: This can be anything, it will be shown at the front so the user can quickly identify the host
 
 Example: `www.google.com:80:Google`
-or (using the install script)
 
+
+**OR** (using the install script)
 
 ```
 curl https://raw.githubusercontent.com/p-i-c-o/pinger/main/.install.sh | bash
