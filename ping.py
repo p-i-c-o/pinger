@@ -14,9 +14,6 @@
 # Logging
 # GUI with PySimpleGUI
 
-
-
-
 import telnetlib, colorama, time, os
 from colorama import Fore, Style
 from datetime import datetime
@@ -67,12 +64,24 @@ def gettime():
     return f"{formatted_date} | {formatted_time}"
 
 
+if not os.path.exists("log"):
+    os.makedirs("log")
+
+def log(status, host):
+  with open(f'log/{host}.log', 'r+') as log:
+    content = log.read()
+    log.close()
+  with open(f'log/{host}.log', 'w+') as log:
+    now = datetime.now()
+    log.write(content + "\n" + f'{now.strftime("%d/%m/%Y")} @ {now.strftime("%H:%M:%S")} | {host} is {status}')
+    content = ""
+
+
 # This reads the hosts file and removes any empty lines in order to prevent trying to ping ""
 with open('hosts', 'r+') as f:
     temp = f.readlines()
 for i in temp:
     hosts.append(i.replace('\n', ''))
-
 
 
 # Start of loop
@@ -82,7 +91,7 @@ try:
       header = f"""Pinger
 {gettime()}
 
-    {Style.BRIGHT}[HOST]{" "*14}[PORT]{" "*25}[HOSTNAME/IP]{Style.RESET_ALL}
+    {Style.BRIGHT}[HOST]{" "*14}[ADDRESS]{" "*22}[PORT]{Style.RESET_ALL}
 """
       output += header # Adding "header" to output first to put it at the top
       for i in hosts: # Iteratiing through the hosts to convert the raw text from the file into the "ip" and "port" vars
@@ -91,6 +100,7 @@ try:
           port = host[1]
           name = host[2]
           output = output + check_online(ip, port, name) + "\n" # Appends the result of "check_online" to the output var
+          log(stat(ip, port), name)
       os.system('clear')
       print(output) # Print the header and the scanned hosts
       output = ""
