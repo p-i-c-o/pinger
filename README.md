@@ -26,3 +26,6 @@ Simply run:
 ## Tested on
 - macOS
 - Ubuntu 22.04.3 LTS
+
+## Screenshots
+![Preview of pinger when run in the terminal](screen1.png)
