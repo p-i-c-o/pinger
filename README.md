@@ -34,8 +34,8 @@ Simply run:
 `python3 ping.py`
 
 ## Tested on
-- [ telnetlib is deprecated ] macOS
-- [ Fully Functional        ] Ubuntu 22.04.3 LTS
+- [~] macOS
+- [✓] Ubuntu 22.04.3 LTS
 
 ## Screenshots
 ![Preview of pinger when run in the terminal](.screen.png)
