@@ -39,13 +39,17 @@ def getport(port_num):
 # Uses telnetlib to check if a host is online an returns a concatenated message with colors
 def check_online(hostname, port, name):
     try:
+        start_time = time.time()
         tn = telnetlib.Telnet(hostname, port, timeout=1)
         tn.close()
+        end_time = time.time()
+        response_time = end_time - start_time
         stat = Fore.GREEN + "[✓]" + Style.RESET_ALL
-        return f"{stat} {name:<20}{hostname:<30} {port}: {getport(port)}"
+        return f"{stat} {name:<20}{hostname:<30} {port}: {getport(port):<40} {response_time:.4f} seconds"
     except (ConnectionRefusedError, OSError) as e:
         stat = Fore.RED + "[×]" + Style.RESET_ALL
-        return f"{stat} {name:<20}{hostname:<30} {port}: {getport(port)}"
+        return f"{stat} {name:<20}{hostname:<30} {port}: {getport(port):<40} N/A"
+
 
 
 def stat(hostname, port):
@@ -64,9 +68,6 @@ def gettime():
     return f"{formatted_date} | {formatted_time}"
 
 
-if not os.path.exists("log"):
-    os.makedirs("log")
-
 
 # This reads the hosts file and removes any empty lines in order to prevent trying to ping ""
 with open('hosts', 'r+') as f:
@@ -82,7 +83,7 @@ try:
       header = f"""Pinger
 {gettime()}
 
-    {Style.BRIGHT}[HOST]{" "*14}[ADDRESS]{" "*22}[PORT]{Style.RESET_ALL}
+    {Style.BRIGHT}[HOST]{" "*14}[ADDRESS]{" "*22}[PORT]{" "*39}[RESPONSE TIME]{Style.RESET_ALL}
 """
       output += header # Adding "header" to output first to put it at the top
       for i in hosts: # Iteratiing through the hosts to convert the raw text from the file into the "ip" and "port" vars
