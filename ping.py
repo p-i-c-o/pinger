@@ -18,8 +18,8 @@ import telnetlib, colorama, time, os
 from colorama import Fore, Style
 from datetime import datetime
 
-import ports # Custom port list "ports.py"
-from ports import portlist # Importing the ports dictionary
+import ports  # Custom port list "ports.py"
+from ports import portlist  # Importing the ports dictionary
 plist = ports.portlist
 
 # Defining the base vars
@@ -39,7 +39,7 @@ def getport(port_num):
         return "N/A"
 
 
-# Uses telnetlib to check if a host is online an returns a concatenated message with colors
+# Uses telnetlib to check if a host is online and returns a concatenated message with colors
 def check_online(hostname, port, name):
     try:
         start_time = time.time()
@@ -47,16 +47,12 @@ def check_online(hostname, port, name):
         tn.close()
         end_time = time.time()
         response_time = end_time - start_time
-        if response_time > timeoutlimit:
-          warn = "TR"
-        if response_time <= timeoutlimit:
-          warn = ""
-        stat = Fore.GREEN + "[✓]" + Style.RESET_ALL
+        warn = "TR" if response_time > timeoutlimit else ""
+        stat = Fore.GREEN + "[✓]" + Style.RESET_ALL if response_time <= timeoutlimit else Fore.RED + "[×]" + Style.RESET_ALL
         return f"{stat} {name:<20}{hostname:<30} {port}: {getport(port):<40} {response_time:.4f} seconds {warn}"
     except (ConnectionRefusedError, OSError) as e:
         stat = Fore.RED + "[×]" + Style.RESET_ALL
         return f"{stat} {name:<20}{hostname:<30} {port}: {getport(port):<40} N/A"
-
 
 
 def stat(hostname, port):
@@ -67,13 +63,13 @@ def stat(hostname, port):
     except (ConnectionRefusedError, OSError) as e:
         return "Offline"
 
+
 # Returns date and time in the "DD/MM/YYYY | HH:MM:SS"
 def gettime():
     now = datetime.now()
     formatted_date = now.strftime("%d/%m/%Y")
     formatted_time = now.strftime("%H:%M:%S")
     return f"{formatted_date} | {formatted_time}"
-
 
 
 # This reads the hosts file and removes any empty lines in order to prevent trying to ping ""
@@ -85,28 +81,28 @@ for i in temp:
 
 # Start of loop
 try:
-  while True:
-      # Defining header, shows date and time and prints table headers
-      header = f"""Pinger
+    while True:
+        # Defining header, shows date and time and prints table headers
+        header = f"""Pinger
 {gettime()}
 
     {Style.BRIGHT}[HOST]{" "*14}[ADDRESS]{" "*22}[PORT]{" "*39}[RESPONSE TIME]{Style.RESET_ALL}
 """
-      for i in hosts: # Iteratiing through the hosts to convert the raw text from the file into the "ip" and "port" vars
-          host = i.split(':')
-          ip = host[0]
-          port = host[1]
-          name = host[2]
-          scanres = check_online(ip, port, name) + "\n"
-          if scanres.endswith('TR'):
-            header += f"{host} reached timeout!\n"
-            scanres = scanres.replace('TR', '')
-          tailoutput = tailoutput + scanres# Appends the result of "check_online" to the output var
-      os.system('clear')
-      print(header + tailoutput) # Print the header and the scanned hosts
-      output, tailoutput = "", ""
-      time.sleep(1)
+        for i in hosts:  # Iterating through the hosts to convert the raw text from the file into the "ip" and "port" vars
+            host = i.split(':')
+            ip = host[0]
+            port = host[1]
+            name = host[2]
+            scanres = check_online(ip, port, name) + "\n"
+            if scanres.endswith('TR'):
+                header += f"{host} reached timeout!\n"
+                scanres = scanres.replace('TR', '')
+            tailoutput = tailoutput + scanres  # Appends the result of "check_online" to the output var
+        os.system('clear')
+        print(header + tailoutput)  # Print the header and the scanned hosts
+        output, tailoutput = "", ""
+        time.sleep(1)
 
-except KeyboardInterrupt: # Catches the keyboard interrupt and neatly exits
-  os.system('rm -r __pycache__')
-  print('\nQuitting...')
+except KeyboardInterrupt:  # Catches the keyboard interrupt and neatly exits
+    os.system('rm -r __pycache__')
+    print('\nQuitting...')
