@@ -92,4 +92,5 @@ try:
 
 except KeyboardInterrupt:  # Catches the keyboard interrupt and neatly exits
     os.system('rm -r __pycache__')
+    os.system('rm .DS_Store')
     print('\nQuitting...')
