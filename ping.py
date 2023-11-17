@@ -45,7 +45,7 @@ def check_online(hostname, port, name):
         response_time = end_time - start_time
         warn = "TR" if response_time > timeoutlimit else ""
         stat = Fore.GREEN + "[✓]" + Style.RESET_ALL if response_time <= timeoutlimit else Fore.RED + "[×]" + Style.RESET_ALL
-        return f"{stat} {name:<20}{hostname:<30} {port}: {getport(port):<40} {response_time:.4f} seconds {warn}"
+        return f"{stat} {name:<20}{hostname:<30} {port}: {getport(port):<20} {response_time:.4f} seconds {warn}"
     except (ConnectionRefusedError, OSError) as e:
         stat = Fore.RED + "[×]" + Style.RESET_ALL
         return f"{stat} {name:<20}{hostname:<30} {port}: {getport(port):<40} N/A"
@@ -73,7 +73,7 @@ try:
         header = f"""Pinger
 {gettime()}
 
-    {Style.BRIGHT}[HOST]{" "*14}[ADDRESS]{" "*22}[PORT]{" "*39}[RESPONSE TIME]{Style.RESET_ALL}
+    {Style.BRIGHT}[HOST]{" "*14}[ADDRESS]{" "*22}[PORT]{" "*19}[RESPONSE TIME]{Style.RESET_ALL}
 """
         for i in hosts:  # Iterating through the hosts to convert the raw text from the file into the "ip" and "port" vars
             host = i.split(':')
@@ -92,5 +92,6 @@ try:
 
 except KeyboardInterrupt:  # Catches the keyboard interrupt and neatly exits
     os.system('rm -r __pycache__')
-    os.system('rm .DS_Store')
+    if ".DS_Store" in os.listdir():
+      os.system('rm .DS_Store')
     print('\nQuitting...')
