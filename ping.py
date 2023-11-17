@@ -25,7 +25,10 @@ plist = ports.portlist
 # Defining the base vars
 hosts = []
 output = ""
+tailoutput = ""
 
+# MODIFY THIS TIMEOUT LIMIT IF YOU WANT
+timeoutlimit = 3
 
 # Uses the port lists to return the plain text port use (ex: 80 -> HTTP)
 def getport(port_num):
@@ -33,7 +36,7 @@ def getport(port_num):
     if description is not None:
         return description
     else:
-        return str(port_num)
+        return "N/A"
 
 
 # Uses telnetlib to check if a host is online an returns a concatenated message with colors
@@ -44,8 +47,12 @@ def check_online(hostname, port, name):
         tn.close()
         end_time = time.time()
         response_time = end_time - start_time
+        if response_time > timeoutlimit:
+          warn = "TR"
+        if response_time <= timeoutlimit:
+          warn = ""
         stat = Fore.GREEN + "[✓]" + Style.RESET_ALL
-        return f"{stat} {name:<20}{hostname:<30} {port}: {getport(port):<40} {response_time:.4f} seconds"
+        return f"{stat} {name:<20}{hostname:<30} {port}: {getport(port):<40} {response_time:.4f} seconds {warn}"
     except (ConnectionRefusedError, OSError) as e:
         stat = Fore.RED + "[×]" + Style.RESET_ALL
         return f"{stat} {name:<20}{hostname:<30} {port}: {getport(port):<40} N/A"
@@ -85,17 +92,21 @@ try:
 
     {Style.BRIGHT}[HOST]{" "*14}[ADDRESS]{" "*22}[PORT]{" "*39}[RESPONSE TIME]{Style.RESET_ALL}
 """
-      output += header # Adding "header" to output first to put it at the top
       for i in hosts: # Iteratiing through the hosts to convert the raw text from the file into the "ip" and "port" vars
           host = i.split(':')
           ip = host[0]
           port = host[1]
           name = host[2]
-          output = output + check_online(ip, port, name) + "\n" # Appends the result of "check_online" to the output var
+          scanres = check_online(ip, port, name) + "\n"
+          if scanres.endswith('TR'):
+            header += f"{host} reached timeout!\n"
+            scanres = scanres.replace('TR', '')
+          tailoutput = tailoutput + scanres# Appends the result of "check_online" to the output var
       os.system('clear')
-      print(output) # Print the header and the scanned hosts
-      output = ""
+      print(header + tailoutput) # Print the header and the scanned hosts
+      output, tailoutput = "", ""
       time.sleep(1)
+
 except KeyboardInterrupt: # Catches the keyboard interrupt and neatly exits
   os.system('rm -r __pycache__')
   print('\nQuitting...')
