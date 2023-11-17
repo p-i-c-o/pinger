@@ -10,10 +10,6 @@
 # https://www.github.com/p-i-c-o/pinger
 # pinger is an uptime tracker for the CLI that bypasses ICMP restrictions by using telnet
 
-# PLANS:
-# Logging
-# GUI with PySimpleGUI
-
 import telnetlib, colorama, time, os
 from colorama import Fore, Style
 from datetime import datetime
