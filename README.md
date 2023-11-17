@@ -21,14 +21,6 @@ Then simply add your hosts in this format: `ipaddress:port:neatname`
 Example: `www.google.com:80:Google`
 
 
-**OR** (using the install script)
-
-```
-curl https://raw.githubusercontent.com/p-i-c-o/pinger/main/.install.sh | bash
-```
-
-
-
 ## Usage
 Simply run:
 `python3 ping.py`
