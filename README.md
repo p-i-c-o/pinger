@@ -3,8 +3,8 @@ python based ping software using telnet to bypass ICMP restrictions
 
 ## Prerequisites
 - Python 3.x
-- `telnetlib` _May be deprecated on newer python versions_
-- `colorama`
+  - `telnetlib` _May be deprecated on newer python versions_
+  - `colorama`
 
 ## Installation
 ```
