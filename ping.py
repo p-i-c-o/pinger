@@ -55,15 +55,6 @@ def check_online(hostname, port, name):
         return f"{stat} {name:<20}{hostname:<30} {port}: {getport(port):<40} N/A"
 
 
-def stat(hostname, port):
-    try:
-        tn = telnetlib.Telnet(hostname, port, timeout=1)
-        tn.close()
-        return "Online"
-    except (ConnectionRefusedError, OSError) as e:
-        return "Offline"
-
-
 # Returns date and time in the "DD/MM/YYYY | HH:MM:SS"
 def gettime():
     now = datetime.now()
